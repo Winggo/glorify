@@ -1,0 +1,29 @@
+.verse {
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	color: white;
+	text-shadow: 1px 1px black;
+	font-size: 22px;
+
+	animation: fadeIn 1.0s cubic-bezier(0.4, 0.0, 0.2, 0.1);
+	filter: drop-shadow(30px 30px 30px black);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.ref {
+	font-size: 14px;
+}
+

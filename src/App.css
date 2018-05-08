@@ -1,0 +1,13 @@
+.App {
+  animation: fadeIn 2s cubic-bezier(0.4, 0.0, 0.2, 0.1);
+  cursor: default;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

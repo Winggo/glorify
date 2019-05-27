@@ -18,7 +18,7 @@ class Main extends Component {
 
 	componentDidMount() {
 		this.setState({ isLoading: true });
-		fetch('https://api.unsplash.com/photos/random?client_id=fc3e2051c728d05af045cd332bcfebf7d0e7e8509b7bb0e55dc9e1443262599c&orientation=landscape&collections=920773,1127846,369,869152,1525582,910773')
+		fetch('https://api.unsplash.com/photos/random?client_id=fc3e2051c728d05af045cd332bcfebf7d0e7e8509b7bb0e55dc9e1443262599c&orientation=landscape&collections=1147235, 3415208, 4057576,291422,367159,327760,1266548,935393,2489501,2290942')
 			.then(res => res.json())
 			.then(data => {
 				this.setState({ imgs: data.urls.full});

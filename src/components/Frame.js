@@ -1,61 +1,62 @@
-import React, { Component } from 'react';
-// import unsplashEx from './jesusSaves.jpg';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './Frame.css';
 
+function Frame({ imgs }) {
+	const [orientation, setOrientation] = useState("background");
+	const [isFirstRender, setIsFirstRender] = useState(true);
+	const imgRef = useRef(null);
 
-class Frame extends Component {
+	const updateDimensions = useCallback(() => {
+		if (isFirstRender) {
+			setOrientation("background");
+			setIsFirstRender(false);
+			return;
+		}
 
-	constructor(props) {
-		super(props);
+		if (imgRef.current) {
+			const windowHeight = window.innerHeight;
+			const imageHeight = imgRef.current.height;
+			
+			if (windowHeight > imageHeight) {
+				setOrientation("portrait");
+			} else {
+				setOrientation("background");
+			}
+		}
+	}, [isFirstRender]);
 
-		this.state = {
-			orientation: "background",
-			firstRender: true
+	useEffect(() => {
+		updateDimensions();
+		window.addEventListener("resize", updateDimensions);
+		
+		return () => {
+			window.removeEventListener("resize", updateDimensions);
 		};
+	}, [updateDimensions]);
+
+	useEffect(() => {
+		// Update dimensions when image loads
+		if (imgRef.current) {
+			imgRef.current.onload = updateDimensions;
+		}
+	}, [imgs, updateDimensions]);
+
+	if (!imgs) {
+		return null;
 	}
 
-	updateDimensions() {
-		if(this.state.firstRender){
-			this.setState({ orientation: "background", firstRender: false });
-			console.log("firstrender");
-		}
-		else if(window.innerHeight > document.getElementById("unsplash").height){
-			this.setState({ orientation: "portrait" });
-			console.log("portrait");
-		}
-		else{
-			this.setState({ orientation: "background" });
-			console.log("background");
-		}
-		// console.log("Dimensions updated");
-		// console.log(window.innerHeight);
-		// console.log(document.getElementById("unsplash").height);
-	}
-
-	componentDidMount() {
-		this.updateDimensions();
-		window.addEventListener("resize", this.updateDimensions.bind(this));
-		// document.addEventListener("DOMContentLoaded", this.updateDimensions.bind(this))
-	}
-
-	render() {
-
-		if(this.state.orientation === "portrait"){
-			return (
-				<div>
-					<img src={this.props.imgs} id="unsplash" className="portrait" alt=" "/>
-				</div>
-			);
-		}
-		else{
-			return (
-				<div>
-					<img src={this.props.imgs} id="unsplash" className="background" alt=" "/>
-				</div>
-			);
-		}
-
-	}
+	return (
+		<div>
+			<img 
+				ref={imgRef}
+				src={imgs} 
+				id="unsplash" 
+				className={orientation} 
+				alt="Beautiful landscape"
+				loading="lazy"
+			/>
+		</div>
+	);
 }
 
-export default Frame;
+export default React.memo(Frame);

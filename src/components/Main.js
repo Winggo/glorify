@@ -1,57 +1,86 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Frame from './Frame';
 import Credits from './Credits';
 import Spinkit from './Spinkit';
 
+function Main() {
+	const [imageData, setImageData] = useState({
+		imgs: '',
+		first_name: '',
+		last_name: '',
+		location: '',
+		username: '',
+		isLoading: true,
+		error: null
+	});
 
-class Main extends Component {
-	constructor(props) {
-		super(props);
-
-		this.state = { imgs: '',
-					   first_name: '',
-					   last_name: '',
-					   location: '',
-					   username: '',
-					   isLoading: false };
-	}
-
-	componentDidMount() {
-		this.setState({ isLoading: true });
-		fetch('https://api.unsplash.com/photos/random?client_id=fc3e2051c728d05af045cd332bcfebf7d0e7e8509b7bb0e55dc9e1443262599c&orientation=landscape&collections=1147235, 3415208, 4057576,291422,367159,327760,1266548,935393,2489501,2290942')
-			.then(res => res.json())
-			.then(data => {
-				this.setState({ imgs: data.urls.full});
-				this.setState({ first_name: data.user.first_name});
-				this.setState({ last_name: data.user.last_name});
-				this.setState({ location: data.location});
-				this.setState({ username: data.user.username});
-				this.setState({ isLoading: false });
-				console.log(data.urls.full);
-				console.log(data);
-			})
-			.catch(err => {
-				console.log('Error when fetching Unsplash', err);
-			})
-	}
-
-	render() {
-
-		if(this.state.isLoading){
-			return(
-				<div>
-					<Spinkit />
-				</div>
-			)
+	const fetchImage = useCallback(async () => {
+		try {
+			setImageData(prev => ({ ...prev, isLoading: true, error: null }));
+			
+			const response = await fetch('https://api.unsplash.com/photos/random?client_id=fc3e2051c728d05af045cd332bcfebf7d0e7e8509b7bb0e55dc9e1443262599c&orientation=landscape&collections=1147235,3415208,4057576,291422,367159,327760,1266548,935393,2489501,2290942');
+			
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
+			
+			const data = await response.json();
+			
+			setImageData({
+				imgs: data.urls.full,
+				first_name: data.user.first_name,
+				last_name: data.user.last_name,
+				location: data.location,
+				username: data.user.username,
+				isLoading: false,
+				error: null
+			});
+		} catch (err) {
+			console.error('Error when fetching Unsplash:', err);
+			setImageData(prev => ({
+				...prev,
+				isLoading: false,
+				error: 'Failed to load image. Please try again.'
+			}));
 		}
+	}, []);
 
-		return(
+	useEffect(() => {
+		fetchImage();
+	}, [fetchImage]);
+
+	if (imageData.isLoading) {
+		return (
 			<div>
-				<Frame {...this.state} />
-				<Credits {...this.state} />
+				<Spinkit />
 			</div>
-		)
+		);
 	}
+
+	if (imageData.error) {
+		return (
+			<div style={{ color: 'white', textAlign: 'center', padding: '20px' }}>
+				<p>{imageData.error}</p>
+				<button onClick={fetchImage} style={{ 
+					padding: '10px 20px', 
+					backgroundColor: '#007bff', 
+					color: 'white', 
+					border: 'none', 
+					borderRadius: '5px',
+					cursor: 'pointer'
+				}}>
+					Retry
+				</button>
+			</div>
+		);
+	}
+
+	return (
+		<div>
+			<Frame {...imageData} />
+			<Credits {...imageData} />
+		</div>
+	);
 }
 
-export default Main;
+export default React.memo(Main);

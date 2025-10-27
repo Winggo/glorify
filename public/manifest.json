@@ -2,14 +2,14 @@
   "short_name": "Glorify",
   "name": "Glorify",
   "description": "Love God, love people",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "version": "1.1",
-  "browser_action": {
+  "action": {
     "default_title": "Glorify",
     "default_icon": "favicon-32x32.png"
   },
   "commands": {
-    "_execute_browser_action": {
+    "_execute_action": {
       "suggested_key": {
         "default": "Ctrl+Shift+F",
         "mac": "MacCtrl+Shift+F"
@@ -26,9 +26,10 @@
     "48": "favicon-48x48.png",
     "128": "favicon-128x128.png"
   },
-
-
   "background": {
-    "scripts": ["background.js"]
-  }
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage"
+  ]
 }

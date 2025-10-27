@@ -1,25 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './Text.css';
+import './MainText.css';
 import Spinkit from './Spinkit';
 
-function Text() {
+function MainText() {
 	const [verseData, setVerseData] = useState({
 		verse: "",
 		ref: "",
 		isLoading: true,
-		error: null
 	});
 
 	const fetchVerse = useCallback(async () => {
 		try {
-			setVerseData(prev => ({ ...prev, isLoading: true, error: null }));
+			setVerseData(prev => ({ ...prev, isLoading: true }));
 			
 			// Using a more reliable CORS proxy or direct API call
-			const response = await fetch('https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/verses/JHN.3.16?content-type=text&include-notes=false&include-titles=true&include-chapter-numbers=false&include-verse-numbers=false', {
-				headers: {
-					'api-key': 'YOUR_API_KEY_HERE' // You'll need to get a free API key from api.bible
-				}
-			});
+			const response = await fetch('https://beta.ourmanna.com/api/v1/get?format=json&order=random');
 			
 			if (!response.ok) {
 				// Fallback to a different API or static content
@@ -29,14 +24,14 @@ function Text() {
 			const data = await response.json();
 			
 			setVerseData({
-				verse: data.data.content,
-				ref: "John 3:16",
+				verse: data.verse.details.text,
+				ref: data.verse.details.reference,
 				isLoading: false,
-				error: null
 			});
 		} catch (err) {
 			console.error('Error when fetching verse:', err);
-			// Fallback to static inspirational content
+
+			// Fallback to static content
 			const fallbackVerses = [
 				{ verse: "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.", ref: "John 3:16" },
 				{ verse: "I can do all things through Christ who strengthens me.", ref: "Philippians 4:13" },
@@ -51,7 +46,6 @@ function Text() {
 				verse: randomVerse.verse,
 				ref: randomVerse.ref,
 				isLoading: false,
-				error: null
 			});
 		}
 	}, []);
@@ -80,4 +74,4 @@ function Text() {
 	);
 }
 
-export default React.memo(Text);
+export default React.memo(MainText);

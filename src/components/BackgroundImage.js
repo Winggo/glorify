@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import './Frame.css';
+import './BackgroundImage.css';
 
-function Frame({ imgs }) {
+function BackgroundImage({ image }) {
 	const [orientation, setOrientation] = useState("background");
 	const [isFirstRender, setIsFirstRender] = useState(true);
 	const imgRef = useRef(null);
@@ -39,9 +39,9 @@ function Frame({ imgs }) {
 		if (imgRef.current) {
 			imgRef.current.onload = updateDimensions;
 		}
-	}, [imgs, updateDimensions]);
+	}, [image, updateDimensions]);
 
-	if (!imgs) {
+	if (!image) {
 		return null;
 	}
 
@@ -49,7 +49,7 @@ function Frame({ imgs }) {
 		<div>
 			<img 
 				ref={imgRef}
-				src={imgs} 
+				src={image} 
 				id="unsplash" 
 				className={orientation} 
 				alt="Beautiful landscape"
@@ -59,4 +59,4 @@ function Frame({ imgs }) {
 	);
 }
 
-export default React.memo(Frame);
+export default React.memo(BackgroundImage);

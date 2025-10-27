@@ -1,7 +1,7 @@
 import React from 'react';
 import './Credits.css';
 
-function Credits({ first_name, last_name, username, location }) {
+function Credits({ firstName, lastName, username, location }) {
 	const unsplashReferral = "https://unsplash.com/?utm_source=Glorify&utm_medium=referral";
 	const photographerReferral = `https://unsplash.com/${username}?utm_source=Glorify&utm_medium=referral`;
 
@@ -15,7 +15,7 @@ function Credits({ first_name, last_name, username, location }) {
 					className='links' 
 					href={photographerReferral}
 				>
-					{first_name} {last_name}
+					{firstName} {lastName}
 				</a>{' '}
 				on{' '}
 				<a 

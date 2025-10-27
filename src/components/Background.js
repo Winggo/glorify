@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Frame from './Frame';
+import BackgroundImage from './BackgroundImage';
 import Credits from './Credits';
 import Spinkit from './Spinkit';
 
-function Main() {
+function Background() {
 	const [imageData, setImageData] = useState({
 		imgs: '',
-		first_name: '',
-		last_name: '',
+		firstName: '',
+		lastName: '',
 		location: '',
 		username: '',
 		isLoading: true,
@@ -28,8 +28,8 @@ function Main() {
 			
 			setImageData({
 				imgs: data.urls.full,
-				first_name: data.user.first_name,
-				last_name: data.user.last_name,
+				firstName: data.user.first_name,
+				lastName: data.user.last_name,
 				location: data.location,
 				username: data.user.username,
 				isLoading: false,
@@ -77,10 +77,15 @@ function Main() {
 
 	return (
 		<div>
-			<Frame {...imageData} />
-			<Credits {...imageData} />
+			<BackgroundImage image={imageData.imgs} />
+			<Credits
+				firstName={imageData.firstName}
+				lastName={imageData.lastName}
+				username={imageData.username}
+				location={imageData.location}
+			/>
 		</div>
 	);
 }
 
-export default React.memo(Main);
+export default React.memo(Background);

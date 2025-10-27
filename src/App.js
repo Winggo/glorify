@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Text from './components/Text';
-import Main from './components/Main';
+import MainText from './components/MainText';
+import Background from './components/Background';
 
 function App() {
   return (
     <div className="App">
-      <Main />
-      <Text />
+      <MainText />
+      <Background />
     </div>
   );
 }

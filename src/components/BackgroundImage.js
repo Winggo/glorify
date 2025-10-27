@@ -2,17 +2,10 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './BackgroundImage.css';
 
 function BackgroundImage({ image }) {
-	const [orientation, setOrientation] = useState("background");
-	const [isFirstRender, setIsFirstRender] = useState(true);
+	const [orientation, setOrientation] = useState("landscape");
 	const imgRef = useRef(null);
 
 	const updateDimensions = useCallback(() => {
-		if (isFirstRender) {
-			setOrientation("background");
-			setIsFirstRender(false);
-			return;
-		}
-
 		if (imgRef.current) {
 			const windowHeight = window.innerHeight;
 			const imageHeight = imgRef.current.height;
@@ -20,10 +13,10 @@ function BackgroundImage({ image }) {
 			if (windowHeight > imageHeight) {
 				setOrientation("portrait");
 			} else {
-				setOrientation("background");
+				setOrientation("landscape");
 			}
 		}
-	}, [isFirstRender]);
+	}, []);
 
 	useEffect(() => {
 		updateDimensions();

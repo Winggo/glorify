@@ -5,7 +5,7 @@ import Spinkit from './Spinkit';
 
 function Background() {
 	const [imageData, setImageData] = useState({
-		imgs: '',
+		image: '',
 		firstName: '',
 		lastName: '',
 		location: '',
@@ -27,7 +27,7 @@ function Background() {
 			const data = await response.json();
 			
 			setImageData({
-				imgs: data.urls.full,
+				image: data.urls.full,
 				firstName: data.user.first_name,
 				lastName: data.user.last_name,
 				location: data.location,
@@ -77,7 +77,7 @@ function Background() {
 
 	return (
 		<div>
-			<BackgroundImage image={imageData.imgs} />
+			<BackgroundImage image={imageData.image} />
 			<Credits
 				firstName={imageData.firstName}
 				lastName={imageData.lastName}
